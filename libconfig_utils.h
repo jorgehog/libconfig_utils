@@ -1,5 +1,5 @@
-#ifndef LIBCONFIGMACROS_H
-#define LIBCONFIGMACROS_H
+#ifndef LIBCONFIG_UTILS_H
+#define LIBCONFIG_UTILS_H
 
 #include <iostream>
 #include <iomanip>
@@ -26,6 +26,8 @@ string getParentName(const Setting & child, uint n, uint nMax) {
         return getParentName(child.getParent(), ++n, nMax);
     }
 }
+
+
 
 const Setting & getSetting(const Setting & root, const vector<string> & keys, uint start = 0) {
 
@@ -73,4 +75,12 @@ const Setting & getSetting(const Setting & root, const vector<string> & keys, ui
     }
 }
 
-#endif // LIBCONFIGMACROS_H
+const Setting & getSurfaceSetting(const Setting & root, string str) {
+
+    vector<string> tmp;
+    tmp.push_back(str);
+
+    return getSetting(root, tmp);
+}
+
+#endif // LIBCONFIG_UTILS_H
