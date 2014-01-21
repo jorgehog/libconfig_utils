@@ -45,13 +45,13 @@ int main()
 }
 ```
 
-[i]Note: The brackets requires compilation with c++ 11[/i]
+<i>Note: The brackets requires compilation with c++ 11</i>
 
 This is nothing new, however, what will happen if we have a mismatch in the names is as follows:
 
-[b]
+<b>
 Unable to load config key 'someVariable_error' from
  root-->FirstLayer-->NextLayer-->someVariable_error
 what() : SettingNotFoundException
  Mismatch in given setting name.
-[/b]
+</b>
