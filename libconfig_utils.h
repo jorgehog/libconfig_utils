@@ -11,6 +11,7 @@ using namespace std;
 using namespace libconfig;
 
 #define ROOTSPEC "###oodododo12389fdsndklfn1092032"
+#define NO_RETURN_VALUE(T) T()
 
 inline
 string getParentName(const Setting & child, uint n, uint nMax) {
@@ -31,15 +32,21 @@ string getParentName(const Setting & child, uint n, uint nMax) {
 }
 
 inline
-void dumpError(const exception & exc, const Setting & root, const string & header) {
+void dumpError(const exception & exc, const Setting & root, string header = "") {
+
+    vector<string> precessors;
+    uint i = 0;
+    string name = "";
+
+    if (header.empty()) {
+        i++; //this means that we will end up counting the header twice.
+        header = root.getName();
+    }
+
 
     cerr << "Unable to load config key '"
          << header << "' from\n root";
 
-    vector<string> precessors;
-
-    uint i = 0;
-    string name;
 
     while (name.compare(ROOTSPEC) != 0) {
 
@@ -53,7 +60,9 @@ void dumpError(const exception & exc, const Setting & root, const string & heade
         cerr << "-->" << precessors.at(precessors.size() - i - 1);
     }
 
+
     cerr << "-->" << header;
+
 
     cerr << "\nwhat() : " << exc.what();
 
@@ -88,12 +97,54 @@ const Setting & getSetting(const Setting & root, const vector<string> & keys, ui
     }
 
     catch (const exception & exc) {
-
         dumpError(exc, root, keys.at(start));
     }
 
     return root;
 }
+
+template <typename T>
+inline
+const T getSetting(const Setting &root, const vector<string> &keys, uint start = 0) {
+
+    (void) start;
+
+    const Setting &end = getSetting(root, keys, 0);
+
+    try
+    {
+        return (T) end;
+    }
+
+    catch (const SettingTypeException & exc)
+    {
+        dumpError(exc, end);
+        return NO_RETURN_VALUE(T);
+    }
+
+}
+
+template <>
+inline
+const string getSetting(const Setting &root, const vector<string> &keys, uint start) {
+
+    (void) start;
+
+    const Setting &end = getSetting(root, keys, 0);
+
+    try
+    {
+        return (string) (end.c_str());
+    }
+
+    catch (const SettingTypeException & exc)
+    {
+        dumpError(exc, end);
+        return NO_RETURN_VALUE(string);
+    }
+
+}
+
 
 inline
 const Setting & getSurfaceSetting(const Setting & root, string str) {
@@ -104,54 +155,21 @@ const Setting & getSurfaceSetting(const Setting & root, string str) {
     return getSetting(root, tmp);
 }
 
-
-template <typename T>
-inline
-const T getSetting(const Setting &root, const vector<string> &keys, uint start) {
-
-    try
-    {
-        return (T) getSetting(root, keys, start);
-    }
-
-    catch (const SettingTypeException & exc)
-    {
-        dumpError(exc, root, *keys.end());
-        return T();
-    }
-
-}
-
-template <>
-inline
-const string getSetting(const Setting &root, const vector<string> &keys, uint start) {
-
-    try
-    {
-        return (string) (getSetting(root, keys, start).c_str());
-    }
-
-    catch (const SettingTypeException & exc)
-    {
-        dumpError(exc, root, *keys.end());
-        return string();
-    }
-
-}
-
 template <typename T>
 inline
 const T getSurfaceSetting(const Setting &root, const string &tmp) {
 
+    const Setting &end = getSurfaceSetting(root, tmp);
+
     try
     {
-        return (T) getSurfaceSetting(root, tmp);
+        return (T) end;
     }
 
     catch (const SettingTypeException & exc)
     {
-        dumpError(exc, root, tmp);
-        return T();
+        dumpError(exc, end);
+        return NO_RETURN_VALUE(T);
     }
 
 }
@@ -159,15 +177,18 @@ const T getSurfaceSetting(const Setting &root, const string &tmp) {
 template <>
 inline
 const string getSurfaceSetting(const Setting &root, const string &tmp) {
+
+    const Setting &end = getSurfaceSetting(root, tmp);
+
     try
     {
-        return (string)(getSurfaceSetting(root, tmp).c_str());
+        return (string)(end.c_str());
     }
 
     catch (const SettingTypeException & exc)
     {
-        dumpError(exc, root, tmp);
-        return string();
+        dumpError(exc, end);
+        return NO_RETURN_VALUE(string);
     }
 }
 

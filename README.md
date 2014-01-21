@@ -55,3 +55,24 @@ Unable to load config key 'someVariable_error' from
 what() : SettingNotFoundException
  Mismatch in given setting name.
 ```
+
+What is not covered in the previous example is what happens if the typecast fails, i.e. that libconfig finds a mismatch in the format of the variable in the file and the type requested; it simply crashes. 
+
+If you want to avoid this, a template type can be specified as follows:
+
+```
+    int someVariable = getSetting<int>(root, {"FirstLayer",
+                                      	      "NextLayer",
+                                              "someVariable"});
+```
+
+where in the case of a mismatch (i.e. if we use comma for integer values) , the following message appears:
+
+```
+Unable to load config key 'someVariable' from
+ root-->FirstLayer-->NextLayer-->someVariable
+what() : SettingTypeException
+ Mismatch in given template type and config file variable format.
+```
+
+
