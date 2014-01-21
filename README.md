@@ -32,7 +32,7 @@ int main()
 
     Config cfg;
 
-    cfg.readFile("infiles/config.cfg");
+    cfg.readFile("config.cfg");
 
     const Setting & root = cfg.getRoot();
 
@@ -74,5 +74,29 @@ Unable to load config key 'someVariable' from
 what() : SettingTypeException
  Mismatch in given template type and config file variable format.
 ```
+
+Errors do not necessarily have to be at the bottom level, in which the lower levels will not be indicated:
+
+```
+Unable to load config key 'wrong_NextLayer' from
+ root-->FirstLayer-->wrong_NextLayer
+what() : SettingNotFoundException
+ Mismatch in given setting name.
+```
+
+If you wish only to read a single variable from <b> the next level </b>, then you will not have to use lists, but can rather use the function <i>getSurfaceSetting</i> as follows:
+
+```
+...
+    const Setting & root = cfg.getRoot();
+    const Setting & mid  = getSetting(root, {"FirstLayer", "NextLayer"});
+
+    int someVariable = getSurfaceSetting<int>(mid, "someVariable");
+...
+```
+
+This is equivalent to dropping the 'Surface' and adding the string in brackets, but thought of as a more conveinient option for single depth parsing.
+
+
 
 
