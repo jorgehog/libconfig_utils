@@ -49,9 +49,9 @@ int main()
 
 This is nothing new, however, what will happen if we have a mismatch in the names is as follows:
 
-<b>
-Unable to load config key 'someVariable_error' from
- root-->FirstLayer-->NextLayer-->someVariable_error
-what() : SettingNotFoundException
- Mismatch in given setting name.
-</b>
+
+<b>Unable to load config key 'someVariable_error' from</b>
+<b> root-->FirstLayer-->NextLayer-->someVariable_error</b>
+<b>what() : SettingNotFoundException</b>
+<b> Mismatch in given setting name.</b>
+
