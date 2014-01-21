@@ -12,6 +12,7 @@ using namespace libconfig;
 
 #define ROOTSPEC "###oodododo12389fdsndklfn1092032"
 
+inline
 string getParentName(const Setting & child, uint n, uint nMax) {
 
     if (n == nMax) {
@@ -29,6 +30,7 @@ string getParentName(const Setting & child, uint n, uint nMax) {
     }
 }
 
+inline
 void dumpError(const exception & exc, const Setting & root, const string & header) {
 
     cerr << "Unable to load config key '"
@@ -68,7 +70,7 @@ void dumpError(const exception & exc, const Setting & root, const string & heade
 
 }
 
-
+inline
 const Setting & getSetting(const Setting & root, const vector<string> & keys, uint start = 0) {
 
     if (start == keys.size()) {
@@ -93,6 +95,7 @@ const Setting & getSetting(const Setting & root, const vector<string> & keys, ui
     return root;
 }
 
+inline
 const Setting & getSurfaceSetting(const Setting & root, string str) {
 
     vector<string> tmp;
@@ -103,6 +106,7 @@ const Setting & getSurfaceSetting(const Setting & root, string str) {
 
 
 template <typename T>
+inline
 const T getSetting(const Setting &root, const vector<string> &keys, uint start) {
 
     try
@@ -119,6 +123,7 @@ const T getSetting(const Setting &root, const vector<string> &keys, uint start) 
 }
 
 template <>
+inline
 const string getSetting(const Setting &root, const vector<string> &keys, uint start) {
 
     try
@@ -135,6 +140,7 @@ const string getSetting(const Setting &root, const vector<string> &keys, uint st
 }
 
 template <typename T>
+inline
 const T getSurfaceSetting(const Setting &root, const string &tmp) {
 
     try
@@ -151,6 +157,7 @@ const T getSurfaceSetting(const Setting &root, const string &tmp) {
 }
 
 template <>
+inline
 const string getSurfaceSetting(const Setting &root, const string &tmp) {
     try
     {
