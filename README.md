@@ -50,8 +50,8 @@ int main()
 This is nothing new, however, what will happen if we have a mismatch in the names is as follows:
 
 ```
-Unable to load config key 'someVariable_error' from
- root-->FirstLayer-->NextLayer-->someVariable_error
+Unable to load config key 'anotherVariable' from
+ root-->FirstLayer-->NextLayer-->anotherVariable
 what() : SettingNotFoundException
  Mismatch in given setting name.
 ```
@@ -66,7 +66,7 @@ If you want to avoid this, a template type can be specified as follows:
                                               "someVariable"});
 ```
 
-where in the case of a mismatch (i.e. if we use comma for integer values) , the following message appears:
+where in the case of a mismatch (i.e. if we set <i>someVariable = 2.0</i>) , the following message appears:
 
 ```
 Unable to load config key 'someVariable' from
@@ -78,8 +78,8 @@ what() : SettingTypeException
 Errors do not necessarily have to be at the bottom level, in which the lower levels will not be indicated:
 
 ```
-Unable to load config key 'wrong_NextLayer' from
- root-->FirstLayer-->wrong_NextLayer
+Unable to load config key 'NextLayer_with_typo' from
+ root-->FirstLayer-->NextLayer_with_typo
 what() : SettingNotFoundException
  Mismatch in given setting name.
 ```
