@@ -97,6 +97,8 @@ If you wish only to read a single variable from <b> the next level </b>, then yo
 
 This is equivalent to dropping the 'Surface' and adding the string in brackets, but thought of as a more conveinient option for single depth parsing.
 
+Note also that in the last example, we saved a variable <i>mid</i> which is a simple libconfig++ Setting object. There is absolutely no difference in the memory address of <i>mid</i> and <i>root["FirstLayer"]["NextLayer"]</i> by construction.
+
 
 
 
