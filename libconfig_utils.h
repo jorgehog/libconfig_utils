@@ -25,6 +25,9 @@ string getParentName(const Setting & child, uint n, uint nMax) {
         }
 
         catch (const exception & exc) {
+
+            (void) exc;
+
             return ROOTSPEC;
         }
     }
