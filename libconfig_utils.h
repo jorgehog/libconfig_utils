@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
+#include <string.h>
 
 #include <libconfig.h++>
 
