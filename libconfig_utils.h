@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <vector>
 #include <string.h>
+#include <sys/types.h>
 
 #include <libconfig.h++>
 
@@ -149,7 +150,7 @@ const string getSetting(const Setting &root, const vector<string> &keys, uint st
 
     try
     {
-        return (string) (end.c_str());
+        return end;
     }
 
     catch (const SettingTypeException & exc)
@@ -163,7 +164,7 @@ const string getSetting(const Setting &root, const vector<string> &keys, uint st
 
 //! Same as getSetting but works conveiniently for single layer parsing
 inline
-const Setting & getSurfaceSetting(const Setting & root, string str) {
+const Setting & getSetting(const Setting & root, const char* str) {
 
     vector<string> tmp;
     tmp.push_back(str);
@@ -173,39 +174,12 @@ const Setting & getSurfaceSetting(const Setting & root, string str) {
 
 template <typename T>
 inline
-const T getSurfaceSetting(const Setting &root, const string &tmp) {
+const T getSetting(const Setting &root, const char* str) {
 
-    const Setting &end = getSurfaceSetting(root, tmp);
+    vector<string> tmp;
+    tmp.push_back(str);
 
-    try
-    {
-        return (T) end;
-    }
-
-    catch (const SettingTypeException & exc)
-    {
-        dumpError(exc, end);
-        return NO_RETURN_VALUE(T);
-    }
-
-}
-
-template <>
-inline
-const string getSurfaceSetting(const Setting &root, const string &tmp) {
-
-    const Setting &end = getSurfaceSetting(root, tmp);
-
-    try
-    {
-        return (string)(end.c_str());
-    }
-
-    catch (const SettingTypeException & exc)
-    {
-        dumpError(exc, end);
-        return NO_RETURN_VALUE(string);
-    }
+    return getSetting<T>(root, tmp);
 }
 
 
